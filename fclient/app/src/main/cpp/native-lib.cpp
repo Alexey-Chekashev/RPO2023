@@ -25,6 +25,39 @@ Java_ru_iu3_fclient_MainActivity_initRng(JNIEnv *env, jclass clazz) {
                 strlen( personalization ) );
 }
 
+JavaVM* gJvm = nullptr;
+
+JNIEXPORT jint JNICALL JNI_OnLoad (JavaVM* pjvm, void* reserved)
+{
+    gJvm = pjvm;
+    return JNI_VERSION_1_6;
+}
+
+JNIEnv* getEnv (bool& detach)
+{
+    JNIEnv* env = nullptr;
+    int status = gJvm->GetEnv ((void**)&env, JNI_VERSION_1_6);
+    detach = false;
+    if (status == JNI_EDETACHED)
+    {
+        status = gJvm->AttachCurrentThread (&env, NULL);
+        if (status < 0)
+        {
+            return nullptr;
+        }
+        detach = true;
+    }
+    return env;
+}
+
+void releaseEnv (bool detach, JNIEnv* env)
+{
+    if (detach && (gJvm != nullptr))
+    {
+        gJvm->DetachCurrentThread ();
+    }
+}
+
 extern "C" JNIEXPORT jbyteArray JNICALL
 Java_ru_iu3_fclient_MainActivity_randomBytes(JNIEnv *env, jclass, jint no) {
     uint8_t * buf = new uint8_t [no];
@@ -101,6 +134,28 @@ Java_ru_iu3_fclient_MainActivity_decrypt(JNIEnv *env, jclass, jbyteArray key, jb
     env->ReleaseByteArrayElements(data, pdata, 0);
     return dout;
 }
+    extern "C"
+    JNIEXPORT jboolean JNICALL
+    Java_ru_iu3_fclient_MainActivity_transaction(JNIEnv *xenv, jobject xthiz, jbyteArray xtrd) {
+        jobject thiz  = xenv->NewGlobalRef(xthiz);
+        jbyteArray trd  = (jbyteArray)xenv->NewGlobalRef(xtrd);
+        std::thread t([thiz, trd] {
+            bool detach = false;
+            JNIEnv *env = getEnv(detach);
+            jclass cls = env->GetObjectClass(thiz);
+            jmethodID id = env->GetMethodID(
+        	cls, "enterPin", "(ILjava/lang/String;)Ljava/lang/String;");
+}
+    id = env->GetMethodID(cls, "transactionResult", "(Z)V");
+    env->CallVoidMethod(thiz, id, ptc > 0);
 
-
+    env->ReleaseByteArrayElements(trd, (jbyte *)p, 0);
+    env->DeleteGlobalRef(thiz);
+    env->DeleteGlobalRef(trd);
+    releaseEnv(detach, env);
+    return true;
+});
+    t.detach();
+    return true;
+}
 }
