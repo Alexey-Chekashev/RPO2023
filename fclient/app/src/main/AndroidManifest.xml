@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Fclient"
-        tools:targetApi="32">
+        tools:targetApi="32"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".PinpadActivity"
             android:exported="false">
@@ -34,5 +35,5 @@
                 android:value="" />
         </activity>
     </application>
-
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
