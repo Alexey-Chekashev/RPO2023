@@ -1,0 +1,73 @@
+Performing C++ SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/alexey/AndroidStudioProjects/libs/spdlog/build/x86/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_d15c2/fast && /usr/bin/make  -f CMakeFiles/cmTC_d15c2.dir/build.make CMakeFiles/cmTC_d15c2.dir/build
+make[1]: Entering directory '/home/alexey/AndroidStudioProjects/libs/spdlog/build/x86/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_d15c2.dir/src.cxx.o
+/home/alexey/Android/Sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=i686-none-linux-android19 --sysroot=/home/alexey/Android/Sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DCMAKE_HAVE_LIBC_PTHREAD  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -DSPDLOG_COMPILED_LIB  -fPIE -std=c++11 -MD -MT CMakeFiles/cmTC_d15c2.dir/src.cxx.o -MF CMakeFiles/cmTC_d15c2.dir/src.cxx.o.d -o CMakeFiles/cmTC_d15c2.dir/src.cxx.o -c /home/alexey/AndroidStudioProjects/libs/spdlog/build/x86/CMakeFiles/CMakeTmp/src.cxx
+/home/alexey/AndroidStudioProjects/libs/spdlog/build/x86/CMakeFiles/CMakeTmp/src.cxx:13:3: error: use of undeclared identifier 'pthread_cancel'
+  pthread_cancel(thread);
+  ^
+1 error generated.
+make[1]: *** [CMakeFiles/cmTC_d15c2.dir/build.make:79: CMakeFiles/cmTC_d15c2.dir/src.cxx.o] Error 1
+make[1]: Leaving directory '/home/alexey/AndroidStudioProjects/libs/spdlog/build/x86/CMakeFiles/CMakeTmp'
+make: *** [Makefile:127: cmTC_d15c2/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+static void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_cancel(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/alexey/AndroidStudioProjects/libs/spdlog/build/x86/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_57537/fast && /usr/bin/make  -f CMakeFiles/cmTC_57537.dir/build.make CMakeFiles/cmTC_57537.dir/build
+make[1]: Entering directory '/home/alexey/AndroidStudioProjects/libs/spdlog/build/x86/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_57537.dir/CheckFunctionExists.cxx.o
+/home/alexey/Android/Sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=i686-none-linux-android19 --sysroot=/home/alexey/Android/Sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/sysroot   -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -DSPDLOG_COMPILED_LIB -DCHECK_FUNCTION_EXISTS=pthread_create -fPIE -std=c++11 -MD -MT CMakeFiles/cmTC_57537.dir/CheckFunctionExists.cxx.o -MF CMakeFiles/cmTC_57537.dir/CheckFunctionExists.cxx.o.d -o CMakeFiles/cmTC_57537.dir/CheckFunctionExists.cxx.o -c /home/alexey/AndroidStudioProjects/libs/spdlog/build/x86/CMakeFiles/CheckLibraryExists/CheckFunctionExists.cxx
+Linking CXX executable cmTC_57537
+/home/alexey/Android/Sdk/cmake/3.22.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_57537.dir/link.txt --verbose=1
+/home/alexey/Android/Sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=i686-none-linux-android19 --sysroot=/home/alexey/Android/Sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -DSPDLOG_COMPILED_LIB -DCHECK_FUNCTION_EXISTS=pthread_create -static-libstdc++ -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    CMakeFiles/cmTC_57537.dir/CheckFunctionExists.cxx.o -o cmTC_57537  -lpthreads -latomic -lm 
+ld: error: unable to find library -lpthreads
+clang++: error: linker command failed with exit code 1 (use -v to see invocation)
+make[1]: *** [CMakeFiles/cmTC_57537.dir/build.make:100: cmTC_57537] Error 1
+make[1]: Leaving directory '/home/alexey/AndroidStudioProjects/libs/spdlog/build/x86/CMakeFiles/CMakeTmp'
+make: *** [Makefile:127: cmTC_57537/fast] Error 2
+
+
+
+Determining if the function pthread_create exists in the pthread failed with the following output:
+Change Dir: /home/alexey/AndroidStudioProjects/libs/spdlog/build/x86/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_d6183/fast && /usr/bin/make  -f CMakeFiles/cmTC_d6183.dir/build.make CMakeFiles/cmTC_d6183.dir/build
+make[1]: Entering directory '/home/alexey/AndroidStudioProjects/libs/spdlog/build/x86/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_d6183.dir/CheckFunctionExists.cxx.o
+/home/alexey/Android/Sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=i686-none-linux-android19 --sysroot=/home/alexey/Android/Sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/sysroot   -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -DSPDLOG_COMPILED_LIB -DCHECK_FUNCTION_EXISTS=pthread_create -fPIE -std=c++11 -MD -MT CMakeFiles/cmTC_d6183.dir/CheckFunctionExists.cxx.o -MF CMakeFiles/cmTC_d6183.dir/CheckFunctionExists.cxx.o.d -o CMakeFiles/cmTC_d6183.dir/CheckFunctionExists.cxx.o -c /home/alexey/AndroidStudioProjects/libs/spdlog/build/x86/CMakeFiles/CheckLibraryExists/CheckFunctionExists.cxx
+Linking CXX executable cmTC_d6183
+/home/alexey/Android/Sdk/cmake/3.22.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d6183.dir/link.txt --verbose=1
+/home/alexey/Android/Sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=i686-none-linux-android19 --sysroot=/home/alexey/Android/Sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -DSPDLOG_COMPILED_LIB -DCHECK_FUNCTION_EXISTS=pthread_create -static-libstdc++ -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    CMakeFiles/cmTC_d6183.dir/CheckFunctionExists.cxx.o -o cmTC_d6183  -lpthread -latomic -lm 
+ld: error: unable to find library -lpthread
+clang++: error: linker command failed with exit code 1 (use -v to see invocation)
+make[1]: *** [CMakeFiles/cmTC_d6183.dir/build.make:100: cmTC_d6183] Error 1
+make[1]: Leaving directory '/home/alexey/AndroidStudioProjects/libs/spdlog/build/x86/CMakeFiles/CMakeTmp'
+make: *** [Makefile:127: cmTC_d6183/fast] Error 2
+
+
+

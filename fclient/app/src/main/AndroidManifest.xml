@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Fclient"
+        android:fitsSystemWindows="true"
         tools:targetApi="32"
         android:usesCleartextTraffic="true">
         <activity
