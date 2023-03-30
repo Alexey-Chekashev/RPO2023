@@ -27,8 +27,8 @@ public class Country {
 
     // Лучше поставить аннотацию JsonIgnore, так как она ограничивает появления "зеркала"
     @JsonIgnore
-    @OneToMany(mappedBy = "countryid")
-    public List<Artist> artists = new ArrayList<>();
+    @OneToMany(mappedBy = "country")
+    public List<Artist> artists = new ArrayList<Artist>();
 
     /**
      * Конструктор без параметров

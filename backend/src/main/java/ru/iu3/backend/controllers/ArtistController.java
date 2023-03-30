@@ -56,9 +56,9 @@ public class ArtistController {
         try {
 
             // Извлекаем самостоятельно страну из пришедших данных
-            Optional<Country> cc = countryRepository.findById(artists.countryid.id);
+            Optional<Country> cc = countryRepository.findById(artists.country.id);
             if (cc.isPresent()) {
-                artists.countryid = cc.get();
+                artists.country = cc.get();
             }
             // Формируем новый объект класса Artists и сохраняем его в репозиторий
             Artist nc = artistsRepository.save(artists);
@@ -93,8 +93,8 @@ public class ArtistController {
 
             // Обновляем информацию по художникам
             artist.name = artistDetails.name;
-            artist.age   = artistDetails.age;
-            artist.countryid = artistDetails.countryid;
+            artist.century   = artistDetails.century;
+            artist.country = artistDetails.country;
             artistsRepository.save(artist);
             return ResponseEntity.ok(artist);
         } else {

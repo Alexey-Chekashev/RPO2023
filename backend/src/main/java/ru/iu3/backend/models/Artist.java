@@ -22,8 +22,8 @@ public class Artist {
     @Column(name = "name", nullable = false, unique = true)
     public String name;
 
-    @Column(name = "age", nullable = false)
-    public String age;
+    @Column(name = "century", nullable = false)
+    public String century;
 
 
     @JsonIgnore
@@ -31,5 +31,5 @@ public class Artist {
     public List<Painting> paintings = new ArrayList<Painting>();
     @ManyToOne()
     @JoinColumn(name = "countryid")
-    public Country countryid;
+    public Country country;
 }
