@@ -43,12 +43,12 @@ gJvm->DetachCurrentThread ();
 
 mbedtls_entropy_context entropy;
 mbedtls_ctr_drbg_context ctr_drbg;
-char *personalization = "rpolab-sample-app";
+char *personalization = "fclient-sample-app";
 
-auto android_logger = spdlog::android_logger_mt("android", "rpolab_ndk");
+auto android_logger = spdlog::android_logger_mt("android", "fclient_ndk");
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_example_rpolab_MainActivity_stringFromJNI(
+Java_ru_iu3_fclient_MainActivity_stringFromJNI(
 JNIEnv* env,
 jobject /* this */) {
 std::string hello = "Hello from C++";
@@ -59,7 +59,7 @@ return env->NewStringUTF(hello.c_str());
 
 extern "C"
 JNIEXPORT jboolean JNICALL
-Java_com_example_rpolab_MainActivity_transaction(JNIEnv *xenv, jobject xthiz, jbyteArray xtrd) {
+Java_ru_iu3_fclient_MainActivity_transaction(JNIEnv *xenv, jobject xthiz, jbyteArray xtrd) {
 jobject thiz = xenv->NewGlobalRef(xthiz);
 jbyteArray trd = (jbyteArray) xenv->NewGlobalRef(xtrd);
 
@@ -107,7 +107,7 @@ return true;
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_com_example_rpolab_MainActivity_initRng(JNIEnv *env, jclass clazz) {
+Java_ru_iu3_fclient_MainActivity_initRng(JNIEnv *env, jclass clazz) {
 mbedtls_entropy_init( &entropy );
 mbedtls_ctr_drbg_init( &ctr_drbg );
 return mbedtls_ctr_drbg_seed( &ctr_drbg , mbedtls_entropy_func, &entropy,
@@ -115,7 +115,7 @@ return mbedtls_ctr_drbg_seed( &ctr_drbg , mbedtls_entropy_func, &entropy,
 strlen( personalization ) );
 }
 extern "C" JNIEXPORT jbyteArray JNICALL
-Java_com_example_rpolab_MainActivity_randomBytes(JNIEnv *env, jclass, jint no) {
+Java_ru_iu3_fclient_MainActivity_randomBytes(JNIEnv *env, jclass, jint no) {
 uint8_t * buf = new uint8_t [no];
 mbedtls_ctr_drbg_random(&ctr_drbg, buf, no);
 jbyteArray rnd = env->NewByteArray(no);
