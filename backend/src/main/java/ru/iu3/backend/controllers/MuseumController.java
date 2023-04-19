@@ -1,10 +1,10 @@
 package ru.iu3.backend.controllers;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
 import ru.iu3.backend.models.Museum;
 import ru.iu3.backend.models.Painting;
 import ru.iu3.backend.repositories.MuseumRepository;

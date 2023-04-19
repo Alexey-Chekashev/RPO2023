@@ -1,12 +1,15 @@
+
 package ru.iu3.backend.repositories;
-import ru.iu3.backend.models.User;
+
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import ru.iu3.backend.models.User;
 
 import java.util.Optional;
-
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>  {
+public interface UserRepository  extends JpaRepository<User, Long>
+{
     Optional<User> findByToken(String token); // аутентификация пользователя
     Optional<User> findByLogin(String login); // поиск пользователя при входе
 }

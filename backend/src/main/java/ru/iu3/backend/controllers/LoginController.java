@@ -9,7 +9,6 @@ import ru.iu3.backend.models.User;
 import ru.iu3.backend.repositories.UserRepository;
 import ru.iu3.backend.tools.Utils;
 
-import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
@@ -18,11 +17,12 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/auth")
 public class LoginController {
+
     @Autowired
     private UserRepository userRepository;
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@Valid @RequestBody Map<String, String> credentials) {
+    public ResponseEntity<Object> login(@RequestBody Map<String, String> credentials) {
         String login = credentials.get("login");
         String pwd = credentials.get("password");
         if (!pwd.isEmpty() && !login.isEmpty()) {
@@ -39,9 +39,8 @@ public class LoginController {
                     User u3 = userRepository.saveAndFlush(u2);
                     return new ResponseEntity<Object>(u3, HttpStatus.OK);
                 }
-
             }
-            }
+        }
         return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
     }
 

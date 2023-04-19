@@ -1,4 +1,3 @@
-
 package ru.iu3.backend.tools;
 
 import org.springframework.security.crypto.codec.Hex;

@@ -5,15 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import ru.iu3.backend.models.Artist;
-import ru.iu3.backend.models.Country;
-import ru.iu3.backend.models.Museum;
 import ru.iu3.backend.models.Painting;
-import ru.iu3.backend.repositories.PaintingRepository;
 import ru.iu3.backend.repositories.MuseumRepository;
+import ru.iu3.backend.repositories.PaintingRepository;
 
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 
 /**

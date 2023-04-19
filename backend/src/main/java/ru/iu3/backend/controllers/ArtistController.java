@@ -1,4 +1,5 @@
 package ru.iu3.backend.controllers;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,14 +9,16 @@ import ru.iu3.backend.models.*;
 import ru.iu3.backend.repositories.ArtistRepository;
 import ru.iu3.backend.repositories.CountryRepository;
 
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Метод, который отражает логику работы таблицы художников
  */
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("/api/v1")
 public class ArtistController {
     // Здесь используется два репозитория: репозиторий артистов и репозиторий стран
     @Autowired
@@ -28,21 +31,10 @@ public class ArtistController {
      * @return - список артистов, который представлен в JSON
      */
     @GetMapping("/artists")
-    public List getAllCountries() {
+    public List getAllArtists() {
         return artistsRepository.findAll();
     }
 
-
-    @GetMapping("/artists/{id}/paintings")
-    public ResponseEntity<Object> getMuseumsFromArtist(@PathVariable(value = "id") Long artistID) {
-        Optional<Artist> optionalArtists = artistsRepository.findById(artistID);
-
-        if (optionalArtists.isPresent()) {
-            return ResponseEntity.ok(optionalArtists.get().paintings);
-        }
-
-        return ResponseEntity.ok(new ArrayList<Museum>());
-    }
 
     /**
      * Метод, который добавляет артистов в базу данных
@@ -84,8 +76,8 @@ public class ArtistController {
      * @return - возвращает заголовок. Если всё ок, то 200. Иначе будет ошибка
      */
     @PutMapping("/artists/{id}")
-    public ResponseEntity<Artist> updateCountry(@PathVariable(value = "id") Long artistsID,
-                                                 @RequestBody Artist artistDetails) {
+    public ResponseEntity<Artist> updateArtist(@PathVariable(value = "id") Long artistsID,
+                                                @RequestBody Artist artistDetails) {
         Artist artist = null;
         Optional<Artist> cc = artistsRepository.findById(artistsID);
         if (cc.isPresent()) {
@@ -93,7 +85,7 @@ public class ArtistController {
 
             // Обновляем информацию по художникам
             artist.name = artistDetails.name;
-            artist.century   = artistDetails.century;
+            artist.age   = artistDetails.age;
             artist.country = artistDetails.country;
             artistsRepository.save(artist);
             return ResponseEntity.ok(artist);
@@ -108,7 +100,7 @@ public class ArtistController {
      * @return - вернёт 200, если всё было ок
      */
     @DeleteMapping("/artists/{id}")
-    public ResponseEntity<Object> deleteCountry(@PathVariable(value = "id") Long artistID) {
+    public ResponseEntity<Object> deleteArtist(@PathVariable(value = "id") Long artistID) {
         Optional<Artist> artists = artistsRepository.findById(artistID);
         Map<String, Boolean> resp = new HashMap<>();
         // Возвратит true, если объект существует (не пустой)
