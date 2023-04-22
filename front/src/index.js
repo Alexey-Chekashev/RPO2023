@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import NavigationBar from "./components/NavigationBar";
 import Home from "./components/Home";
+import Login from "./components/Login";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,7 +16,8 @@ root.render(
               <NavigationBar />
               <div className="container-fluid">
                   <Routes>
-                      <Route path="home" element={<Home />}/>
+                      <Route path="home" element={<Home />} />
+                      <Route path="login" element={<Login />} />
                   </Routes>
               </div>
           </BrowserRouter>
