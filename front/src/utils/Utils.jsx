@@ -9,7 +9,7 @@ class Utils {
 
     getToken() {
         let user = JSON.parse(window.sessionStorage.getItem('user'));
-        return "Bearer " + user.token;
+        return user&&"Bearer " + user.token;
     }
 
     getUserName() {
