@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import Utils from "../utils/Utils";
 
@@ -15,4 +14,5 @@ class BackendService {
     }
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default new BackendService();
