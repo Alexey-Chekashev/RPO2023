@@ -1,8 +1,9 @@
-import {combineReducers, applyMiddleware} from "redux";
+import {combineReducers} from "redux";
 import {configureStore} from "@reduxjs/toolkit";
 import Utils from "./Utils";
 
 /* ACTIONS */
+
 const userConstants = {
     LOGIN: 'USER_LOGIN',
     LOGOUT: 'USER_LOGOUT',
@@ -14,6 +15,7 @@ const alertConstants = {
 };
 
 /* ACTION GENERATORS */
+
 export const userActions = {
     login,
     logout
@@ -43,8 +45,10 @@ function clear() {
 }
 
 /* REDUCERS */
-let user = Utils.getUser()
+
+let user =  Utils.getUser()
 const initialState = user ? { user } : {}
+
 function authentication(state = initialState, action) {
     console.log("authentication")
     switch (action.type) {
@@ -56,7 +60,6 @@ function authentication(state = initialState, action) {
             return state
     }
 }
-
 
 function alert(state = {}, action) {
     console.log("alert")

@@ -7,7 +7,7 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference ) {
+@media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
@@ -26,6 +26,27 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.wrapper {
+  display: flex;
+  align-items: stretch;
+}
+
+.my-sidebar {
+  min-height: 100vh;
+  background: #ECF0F1;
+  color: #ECF0F1;
+}
+
+.my-sidebar-expanded {
+  min-width: 200px;
+  max-width: 200px;
+}
+
+.my-sidebar-collapsed {
+  min-width: 62px;
+  max-width: 62px;
 }
 
 @keyframes App-logo-spin {

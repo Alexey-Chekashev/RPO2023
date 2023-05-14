@@ -1,8 +1,10 @@
-import axios from "axios";
+import axios from 'axios'
 import Utils from "../utils/Utils";
 import {alertActions, store} from "../utils/Rdx";
+
 const API_URL = 'http://localhost:8080/api/v1'
 const AUTH_URL = 'http://localhost:8080/auth'
+
 function showError(msg) {
     store.dispatch(alertActions.error(msg))
 }
@@ -32,7 +34,6 @@ axios.interceptors.response.use(undefined,
         return Promise.reject(error);
     })
 
-
 class BackendService {
     login(login, password) {
         return axios.post(`${AUTH_URL}/login`, {login, password})
@@ -41,7 +42,24 @@ class BackendService {
     logout() {
         return axios.get(`${AUTH_URL}/logout`, { headers : {Authorization : Utils.getToken()}})
     }
+
+    /* Countries */
+    retrieveAllCountries(page, limit) {
+        return axios.get(`${API_URL}/countries`);
+    }
+    retrieveCountry(id) {
+        return axios.get(`${API_URL}/countries/${id}`);
+    }
+    createCountry(country) {
+        return axios.post(`${API_URL}/countries`, country);
+    }
+    updateCountry(country) {
+        return axios.put(`${API_URL}/countries/${country.id}`, country);
+    }
+    deleteCountries(countries) {
+        return axios.post(`${API_URL}/deletecountries`, countries);
+    }
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default new BackendService();
+export default new BackendService()
