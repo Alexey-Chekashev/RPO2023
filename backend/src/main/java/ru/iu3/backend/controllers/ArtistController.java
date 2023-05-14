@@ -8,15 +8,19 @@ import org.springframework.web.server.ResponseStatusException;
 import ru.iu3.backend.models.*;
 import ru.iu3.backend.repositories.ArtistRepository;
 import ru.iu3.backend.repositories.CountryRepository;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
+import ru.iu3.backend.tools.DataValidationException;
+import javax.validation.Valid;
 /**
  * Метод, который отражает логику работы таблицы художников
  */
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/v1")
 public class ArtistController {
@@ -26,48 +30,69 @@ public class ArtistController {
 
     @Autowired
     CountryRepository countryRepository;
+
     /**
      * Метод, который возвращает список артистов для данной БД
+     *
      * @return - список артистов, который представлен в JSON
      */
     @GetMapping("/artists")
-    public List getAllArtists() {
-        return artistsRepository.findAll();
+    public Page getAllArtists(@RequestParam("page") int page, @RequestParam("limit") int limit) {
+        return artistsRepository.findAll(PageRequest.of(page, limit, Sort.by(Sort.Direction.ASC, "name")));
     }
 
+    @GetMapping("/artists/{id}")
+    public ResponseEntity getArtist(@PathVariable(value = "id") Long artistId)
+            throws DataValidationException {
+        Artist artist = artistsRepository.findById(artistId)
+                .orElseThrow(() -> new DataValidationException("Художник с таким индексом не найден"));
+        return ResponseEntity.ok(artist);
+    }
 
     /**
      * Метод, который добавляет артистов в базу данных
+     *
      * @param artists - Структура данных, которая поступает из PostMan в виде JSON-файла
-     *                  где распарсивается и представлется в нужном для нас виде
+     *                где распарсивается и представлется в нужном для нас виде
      * @return - Статус. 404, если ок. В противном случае, будет выдавать ошибку
      * @throws Exception - выброс исключения. Обязательное требование
      */
     @PostMapping("/artists")
-    public ResponseEntity<Object> createArtist(@RequestBody Artist artists) throws Exception {
+    public ResponseEntity<Object> createArtist(@RequestBody Artist artists) throws DataValidationException {
         try {
 
             // Извлекаем самостоятельно страну из пришедших данных
-            Optional<Country> cc = countryRepository.findById(artists.country.id);
-            if (cc.isPresent()) {
-                artists.country = cc.get();
-            }
+            artists.country = countryRepository.findByName(artists.country.name).orElseThrow(() -> new DataValidationException("Страна с таким индексом не найдена"));
             // Формируем новый объект класса Artists и сохраняем его в репозиторий
             Artist nc = artistsRepository.save(artists);
             return new ResponseEntity<Object>(nc, HttpStatus.OK);
         } catch (Exception exception) {
             // Указываем тип ошибки
-            String error;
             if (exception.getMessage().contains("ConstraintViolationException")) {
-                error = "artistAlreadyExists";
+                throw new DataValidationException("Этот художник уже есть в базе");
             } else {
-                error = exception.getMessage();
+                throw new DataValidationException("Неизвестная ошибка");
             }
-            Map<String, String> map = new HashMap<>();
-            map.put("error", error + "\n");
-            return ResponseEntity.ok(map);
         }
     }
+    @PutMapping("/artists/{id}")
+    public ResponseEntity<Artist> updateArtist(@PathVariable(value = "id") Long artistId, @Valid @RequestBody Artist artistDetails)  throws DataValidationException{
+        try {
+            Artist artist = artistsRepository.findById(artistId).orElseThrow(() -> new DataValidationException("Художник с таким индексом не найден"));
+            artist.name = artistDetails.name;
+            artist.country = countryRepository.findByName(artistDetails.country.name).orElseThrow(() -> new DataValidationException("Страна с таким именем не найдена"));
+            artist.age = artistDetails.age;
+            artistsRepository.save(artist);
+            return ResponseEntity.ok(artist);
+        }
+        catch (Exception ex) {
+            if (ex.getMessage().contains("artist.name_UNIQUE"))
+                throw new DataValidationException("Этот художник уже есть в базе");
+            else
+                throw new DataValidationException("Неизвестная ошибка");
+        }
+    }
+
 
     /**
      * Метод, который обновляет данные для художников
@@ -75,41 +100,15 @@ public class ArtistController {
      * @param artistDetails - детальная информация по художникам
      * @return - возвращает заголовок. Если всё ок, то 200. Иначе будет ошибка
      */
-    @PutMapping("/artists/{id}")
-    public ResponseEntity<Artist> updateArtist(@PathVariable(value = "id") Long artistsID,
-                                                @RequestBody Artist artistDetails) {
-        Artist artist = null;
-        Optional<Artist> cc = artistsRepository.findById(artistsID);
-        if (cc.isPresent()) {
-            artist = cc.get();
-
-            // Обновляем информацию по художникам
-            artist.name = artistDetails.name;
-            artist.age   = artistDetails.age;
-            artist.country = artistDetails.country;
-            artistsRepository.save(artist);
-            return ResponseEntity.ok(artist);
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "artist not found");
-        }
-    }
 
     /**
      * Метод, который удаляет художников
-     * @param artistID - ID художника, который будет удалён из базы данных
+     * @param  - ID художника, который будет удалён из базы данных
      * @return - вернёт 200, если всё было ок
      */
-    @DeleteMapping("/artists/{id}")
-    public ResponseEntity<Object> deleteArtist(@PathVariable(value = "id") Long artistID) {
-        Optional<Artist> artists = artistsRepository.findById(artistID);
-        Map<String, Boolean> resp = new HashMap<>();
-        // Возвратит true, если объект существует (не пустой)
-        if (artists.isPresent()) {
-            artistsRepository.delete(artists.get());
-            resp.put("deleted", Boolean.TRUE);
-        } else {
-            resp.put("deleted", Boolean.FALSE);
-        }
-        return ResponseEntity.ok(resp);
+    @PostMapping("/deleteartists")
+    public ResponseEntity<Object> deleteArtists(@Valid @RequestBody List<Artist> artists) {
+        artistsRepository.deleteAll(artists);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

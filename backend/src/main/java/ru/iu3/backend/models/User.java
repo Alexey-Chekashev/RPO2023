@@ -29,7 +29,8 @@ public class User {
     @JsonIgnore
     @Column(name = "password")
     public String password;
-
+    @Transient
+    public String np;
     @Column(name = "email", unique = true, nullable = false)
     public String email;
 

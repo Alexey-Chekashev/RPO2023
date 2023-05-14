@@ -1,4 +1,4 @@
-import {combineReducers} from "redux";
+import {applyMiddleware, combineReducers, createStore} from "redux";
 import {configureStore} from "@reduxjs/toolkit";
 import Utils from "./Utils";
 

@@ -1,6 +1,8 @@
 
 package ru.iu3.backend.controllers;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +23,8 @@ public class CountryController {
     CountryRepository countryRepository;
 
     @GetMapping("/countries")
-    public List
-    getAllCountries() {
-        return countryRepository.findAll();
+    public Page<Country> getAllCountries(@RequestParam("page") int page, @RequestParam("limit") int limit) {
+        return countryRepository.findAll(PageRequest.of(page, limit, Sort.by(Sort.Direction.ASC, "name")));
         }
     @GetMapping("/countries/{id}")
     public ResponseEntity<Country> getCountry(@PathVariable(value = "id") Long countryId)
